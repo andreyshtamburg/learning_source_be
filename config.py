@@ -10,7 +10,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    MONGOALCHEMY_CONNECTION_STRING = ''
+    MONGOALCHEMY_CONNECTION_STRING = 'mongodb://mongo_user:mongo_secret@0.0.0.0:27017/'
     SWAGGER_UI_DOC_EXPANSION = 'list'
     SWAGGER_DOC_PATH = '/doc/'
 

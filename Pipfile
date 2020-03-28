@@ -11,6 +11,7 @@ flask-mongoalchemy = "*"
 ext = "*"
 flask-restplus = "*"
 flask-script = "*"
+werkzeug = "==0.16.1"
 
 [requires]
 python_version = "3.7"

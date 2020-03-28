@@ -1,5 +1,4 @@
 import os
-
 from flask_script import Manager
 
 from app import create_app, db

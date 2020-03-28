@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_mongoalchemy import MongoAlchemy
+from werkzeug.utils import cached_property
 
 # global object for SQLAlchemy
 db = MongoAlchemy()
@@ -19,6 +20,7 @@ def create_app(config_type='development'):
     from config import config
     app = Flask(__name__)
     app.config.from_object(config[config_type])
+    app.config['MONGOALCHEMY_DATABASE'] = 'learning_source'
 
     global cfg
     cfg = app.config
