@@ -1,9 +1,9 @@
 from flask import Flask
-from flask_mongoalchemy import MongoAlchemy
-from werkzeug.utils import cached_property
 
-# global object for SQLAlchemy
-db = MongoAlchemy()
+from flask_sqlalchemy import SQLAlchemy
+
+# global object for SqlAlchemy
+db = SQLAlchemy()
 # global object for flask logging
 logger = None
 # global object for flask config

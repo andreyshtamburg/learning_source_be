@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restplus import Api
 
 from app import cfg
-from .main.controller.learning_source_controller import ls_ns
+from .main.controller.source_controller import ls_ns
 
 v1_blueprint = Blueprint('v1_blueprint', __name__)
 v1_api = Api(

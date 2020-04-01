@@ -4,24 +4,26 @@ class Config:
     """
     DEBUG = False
     TESTING = False
-    MONGOALCHEMY_CONNECTION_STRING = ''
+    SQLALCHEMY_DATABASE_URI = ''
     SWAGGER_DOC_PATH = False
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    MONGOALCHEMY_CONNECTION_STRING = 'mongodb://mongo_user:mongo_secret@0.0.0.0:27017/'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://source:secret@localhost/source'
     SWAGGER_UI_DOC_EXPANSION = 'list'
     SWAGGER_DOC_PATH = '/doc/'
 
 
 class TestingConfig(Config):
     TESTING = True
-    MONGOALCHEMY_CONNECTION_STRING = ''
+    SQLALCHEMY_DATABASE_URI = ''
+    SWAGGER_UI_DOC_EXPANSION = 'list'
+    SWAGGER_DOC_PATH = '/doc/'
 
 
 class ProductionConfig(Config):
-    MONGOALCHEMY_CONNECTION_STRING = ''
+    SQLALCHEMY_DATABASE_URI = ''
 
 
 config = {

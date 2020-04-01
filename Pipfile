@@ -6,12 +6,12 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flask = "*"
-flask-mongoalchemy = "*"
-ext = "*"
-flask-restplus = "*"
 flask-script = "*"
+flask = "*"
+flask-restplus = "*"
+flask-sqlalchemy = "*"
 werkzeug = "==0.16.1"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"
