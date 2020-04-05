@@ -12,6 +12,10 @@ flask-restplus = "*"
 flask-sqlalchemy = "*"
 werkzeug = "==0.16.1"
 psycopg2 = "*"
+pytest-flask = "*"
+pytest-mock = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
 
 [requires]
 python_version = "3.7"

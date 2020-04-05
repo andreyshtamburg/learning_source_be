@@ -43,5 +43,16 @@ class Source(db.Model):
         'last_updated': fields.DateTime
     })
 
+    create_source_request_resource_model = v1_api.model('Create new source request model', {
+        'name': fields.String,
+        'description': fields.String,
+        'link': fields.String,
+        'tags': fields.List(fields.Nested(tag_response_resource_model)),
+    })
+
+    create_source_response_resource_model = v1_api.model('Create new source response model', {
+        'name': fields.String
+    })
+
     def __repr__(self):
         return f'<{__name__}.{__class__} id: {self.id}>'
