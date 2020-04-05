@@ -1,18 +1,22 @@
-from flask_restplus import Resource, Namespace
 from http import HTTPStatus
 
-from app.v1.main.model.learning_source import Source
-from global_utils import get_global_parser
+from flask_restplus import Resource, Namespace
 
+from ..model.learning_source import Source
 
 ls_ns = Namespace('ls')
-parser = get_global_parser(ls_ns)
 
 
 @ls_ns.route("/")
 class LearningSource(Resource):
-    @ls_ns.doc(validate=True)
+    @ls_ns.doc()
+    @ls_ns.marshal_with(Source.get_sources_response_resource_model,
+                        code=HTTPStatus.OK,
+                        as_list=True,
+                        description='Get all users')
     def get(self):
         sources = Source.query.all()
-        if not sources:
-            return '{"error": "No sources found"}', HTTPStatus.OK
+        if sources:
+            return sources, HTTPStatus.OK
+        else:
+            return "Nothing found", HTTPStatus.NOT_FOUND

@@ -2,7 +2,6 @@ from flask import Blueprint
 from flask_restplus import Api
 
 from app import cfg
-from .main.controller.source_controller import ls_ns
 
 v1_blueprint = Blueprint('v1_blueprint', __name__)
 v1_api = Api(
@@ -12,4 +11,5 @@ v1_api = Api(
     doc=cfg['SWAGGER_DOC_PATH']
 )
 
+from .main.controller.source_controller import ls_ns
 v1_api.add_namespace(ls_ns)

@@ -27,7 +27,7 @@ def create_app(config_type='development'):
 
     db.init_app(app)
 
-    from .v1 import v1_blueprint
+    from app.v1 import v1_blueprint
     app.register_blueprint(v1_blueprint, url_prefix='/api/v1')
 
     return app
