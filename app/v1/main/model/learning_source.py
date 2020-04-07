@@ -43,6 +43,15 @@ class Source(db.Model):
         'last_updated': fields.DateTime
     })
 
+    get_source_by_id_response_model = v1_api.model('Source', {
+        'id': fields.Integer,
+        'name': fields.String,
+        'link': fields.String,
+        'tags': fields.List(fields.Nested(tag_response_resource_model)),
+        'created_at': fields.DateTime,
+        'last_updated': fields.DateTime
+    })
+
     create_source_request_resource_model = v1_api.model('Create new source request model', {
         'name': fields.String,
         'description': fields.String,
@@ -51,7 +60,17 @@ class Source(db.Model):
     })
 
     create_source_response_resource_model = v1_api.model('Create new source response model', {
+        'id': fields.Integer,
         'name': fields.String
+    })
+
+    delete_source_response_model = v1_api.model('Delete source response model', {
+        'id': fields.Integer
+    })
+
+    update_source_response_model = v1_api.model('Update source response model', {
+        'id': fields.Integer,
+        'last_updated': fields.DateTime
     })
 
     def __repr__(self):

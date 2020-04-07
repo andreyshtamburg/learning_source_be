@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from flask_restplus import Resource, Namespace
+from flask_restplus import Resource, Namespace, abort
 
 from app.exceptions import FieldValidationException
 from ..model.learning_source import *
@@ -8,13 +8,57 @@ from ..model.learning_source import *
 ls_ns = Namespace('ls')
 
 
-@ls_ns.route("/")
+@ls_ns.route('/sources/<int:source_id>')
 class LearningSource(Resource):
-    @ls_ns.doc()
+
+    @staticmethod
+    def find_one(source_id):
+        return Source.query.filter_by(id=source_id).first()
+
+    @ls_ns.marshal_with(Source.get_source_by_id_response_model,
+                        code=HTTPStatus.OK,
+                        description='Get source by id')
+    def get(self, source_id):
+        match = self.find_one(source_id)
+        if match:
+            return match, HTTPStatus.OK
+        else:
+            abort(HTTPStatus.NOT_FOUND, f'source with id `{source_id}` is not found')
+
+    @ls_ns.marshal_with(Source.delete_source_response_model,
+                        code=HTTPStatus.OK,
+                        description='Delete source',
+                        skip_none=True)
+    def delete(self, source_id):
+        match = self.find_one(source_id)
+        if match:
+            db.session.delete(match)
+            db.session.commit()
+        return match, HTTPStatus.OK
+
+    @ls_ns.doc(body=Source.create_source_request_resource_model, validate=True)
+    @ls_ns.marshal_with(Source.update_source_response_model)
+    def put(self, source_id):
+        payload = v1_api.payload
+        match = self.find_one(source_id)
+        # TODO update tags as well if exist.
+        if match:
+            match.name = payload.get('name')
+            match.description = payload.get('description')
+            match.link = payload.get('link')
+            match.last_updated = datetime.utcnow()
+
+            db.session.commit()
+        return match, HTTPStatus.OK
+
+
+@ls_ns.route('/')
+class LearningSourceList(Resource):
     @ls_ns.marshal_with(Source.get_sources_response_resource_model,
                         code=HTTPStatus.OK,
                         as_list=True,
-                        description='Get all sources')
+                        description='Get all sources',
+                        envelope='sources')
     def get(self):
         sources = Source.query.all()
         return sources, HTTPStatus.OK
