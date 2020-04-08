@@ -74,7 +74,6 @@ class LearningSourceList(Resource):
         not_found_tags = []
         tags = []
         request_tags = [x.lower() for x in [tag['name'] for tag in payload['tags']]]
-        print(request_tags)
 
         # Verify if tags are present in db and populate list of tags to add to source
         for tag in request_tags:
@@ -85,7 +84,6 @@ class LearningSourceList(Resource):
                 not_found_tags.append(tag.name)
         if not_found_tags:
             exception_map['tag_not_found'] = not_found_tags
-        print(tags)
 
         # Duplicates check
         # TODO do some modifications to url before checking for duplicate
@@ -94,7 +92,6 @@ class LearningSourceList(Resource):
             exception_map['duplicate_source'] = f'Source from `{payload["link"]}` already exists.'
 
         if exception_map:
-            print(exception_map)
             raise FieldValidationException(exception_map=exception_map)
         else:
             # TODO insert urls if the same format
