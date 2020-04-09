@@ -7,4 +7,4 @@ For swagger doc access `http://localhost:4433/api/v1/doc/`
 
 Start db on 5432 port `psql -d "host=localhost port=5432 dbname=source user=source"`
 
-Run tests ` `
+Run tests `py.test`
