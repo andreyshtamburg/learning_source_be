@@ -35,6 +35,7 @@ class Source(db.Model):
     })
 
     get_sources_response_resource_model = v1_api.model('Sources', {
+        'id': fields.Integer,
         'name': fields.String,
         'description': fields.String,
         'link': fields.String,
