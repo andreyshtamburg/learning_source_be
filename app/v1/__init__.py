@@ -13,5 +13,5 @@ v1_api = Api(
     doc='/doc/'
 )
 
-from .main.controller.source_controller import ls_ns
+from .main.controller.SourceController import ls_ns
 v1_api.add_namespace(ls_ns)

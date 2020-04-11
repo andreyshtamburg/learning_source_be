@@ -34,5 +34,6 @@ def test_get_source(client):
     }
 
 
-def test_create_resource(client):
-    pass
+def test_get_all_sources(client):
+    response = client.get(BASE_URL + '/')
+    assert response.status_code == 200
