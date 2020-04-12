@@ -65,11 +65,8 @@ class SourceService:
             self.add_tags_for_source(source, data)
         return exception_map
 
-    def save_changes(self, data):
-        db.session.add(data)
-        db.session.commit()
-
     def update_source(self, source_id, data):
+        # TODO figure out how to return proper failure. Can be either resource not found or update link already exist.
         source = self.get_source_by_id(source_id)
         if source:
             existing_link_source = self.get_source(data)
@@ -81,3 +78,15 @@ class SourceService:
                 self.update_tags(source, data)
                 self.save_changes(source)
                 return source
+
+    def delete_source(self, source_id):
+        source = self.get_source_by_id(source_id)
+        if source:
+            db.session.delete(source)
+            db.session.commit()
+            return source
+
+    def save_changes(self, data):
+        db.session.add(data)
+        db.session.commit()
+        
