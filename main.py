@@ -10,7 +10,7 @@ manager = Manager(app)
 @manager.command
 def run():
     """Run app server"""
-    app.run()
+    app.run(host='0.0.0.0')
 
 
 @manager.command

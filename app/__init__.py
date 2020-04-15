@@ -20,6 +20,9 @@ def create_app(config_type='development'):
     from config import config
     app = Flask(__name__)
     app.config.from_object(config[config_type])
+    # Because of the bug in restplus.
+    # https://github.com/noirbizarre/flask-restplus/issues/764
+    app.config["PROPAGATE_EXCEPTIONS"] = False
 
     global cfg
     cfg = app.config

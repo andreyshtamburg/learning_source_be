@@ -1,7 +1,9 @@
 from http import HTTPStatus
 
+from flask import jsonify
 from flask_restplus import Resource, Namespace, abort
 
+from app.exceptions import FieldValidationException
 from ..model.LearningSourceModel import *
 from ..service.SourceService import SourceService
 
@@ -31,16 +33,19 @@ class LearningSource(Resource):
         if source:
             return source, HTTPStatus.OK
         else:
-            abort(HTTPStatus.BAD_REQUEST, f'source with id {source_id} is not found')
+            # TODO return the same looking response. Make delete idempotent.
+            return f'{source_id}', HTTPStatus.OK
 
     @ls_ns.doc(body=Source.create_source_request_resource_model, validate=True)
-    @ls_ns.marshal_with(Source.update_source_response_model)
+    @ls_ns.marshal_with(Source.update_source_response_model,
+                        code=HTTPStatus.OK,
+                        description='Update source')
     def put(self, source_id):
-        updated_source = self.source_service.update_source(source_id, v1_api.payload)
-        if updated_source:
-            return updated_source, HTTPStatus.OK
+        updated_source, exceptions = self.source_service.update_source(source_id, v1_api.payload)
+        if exceptions:
+            raise FieldValidationException(exception_map=exceptions)
         else:
-            abort(HTTPStatus.BAD_REQUEST, f'source with id {source_id} does not exist')
+            return updated_source, HTTPStatus.OK
 
 
 @ls_ns.route('/')
@@ -59,12 +64,11 @@ class LearningSourceList(Resource):
     @ls_ns.doc(body=Source.create_source_request_resource_model, validate=True)
     @ls_ns.marshal_with(Source.create_source_response_resource_model,
                         code=HTTPStatus.CREATED,
-                        as_list=True,
                         description='Create new source')
     def post(self):
         data = v1_api.payload
-        new_source = self.source_service.save_new_source(data)
-        if new_source:
-            return new_source, HTTPStatus.CREATED
+        new_source, exceptions = self.source_service.save_new_source(data)
+        if exceptions:
+            raise FieldValidationException(exception_map=exceptions)
         else:
-            abort(HTTPStatus.BAD_REQUEST, f'there is already a source with link {data["link"]}')
+            return new_source, HTTPStatus.CREATED
