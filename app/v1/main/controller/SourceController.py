@@ -1,6 +1,5 @@
 from http import HTTPStatus
 
-from flask import jsonify
 from flask_restplus import Resource, Namespace, abort
 
 from app.exceptions import FieldValidationException
