@@ -71,6 +71,8 @@ class SourceService:
     def update_source(self, source_id, data):
         # TODO figure out how to return proper failure. Can be either resource not found or update link already exist.
         exception_map = {}
+        if not data['link'] or data['link'].strip() == '':
+            exception_map['invalid_input'] = 'Link cannot be blank'
         source = self.get_source_by_id(source_id)
         if source:
             existing_link_source = self.get_source(data)
