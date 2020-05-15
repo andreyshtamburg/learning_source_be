@@ -18,6 +18,10 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
 
+    tag_response_resource_model = v1_api.model('Tags', {
+        'name': fields.String
+    })
+
 
 class Source(db.Model):
     __tablename__ = 'sources'
@@ -30,16 +34,12 @@ class Source(db.Model):
     last_updated = db.Column(db.DateTime, default=datetime.utcnow())
     tags = db.relationship('Tag', secondary=source_tag, backref=db.backref('source_tags', lazy='dynamic'))
 
-    tag_response_resource_model = v1_api.model('Tags', {
-        'name': fields.String
-    })
-
     get_sources_response_resource_model = v1_api.model('Sources', {
         'id': fields.Integer,
         'name': fields.String,
         'description': fields.String,
         'link': fields.String,
-        'tags': fields.List(fields.Nested(tag_response_resource_model)),
+        'tags': fields.List(fields.Nested(Tag.tag_response_resource_model)),
         'created_at': fields.DateTime,
         'last_updated': fields.DateTime
     })
@@ -49,7 +49,7 @@ class Source(db.Model):
         'name': fields.String,
         'description': fields.String,
         'link': fields.String,
-        'tags': fields.List(fields.Nested(tag_response_resource_model)),
+        'tags': fields.List(fields.Nested(Tag.tag_response_resource_model)),
         'created_at': fields.DateTime,
         'last_updated': fields.DateTime
     })
@@ -58,7 +58,7 @@ class Source(db.Model):
         'name': fields.String,
         'description': fields.String,
         'link': fields.String,
-        'tags': fields.List(fields.Nested(tag_response_resource_model)),
+        'tags': fields.List(fields.Nested(Tag.tag_response_resource_model)),
     })
 
     create_source_response_resource_model = v1_api.model('Create new source response model', {

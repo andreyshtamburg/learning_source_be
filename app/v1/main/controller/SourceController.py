@@ -5,6 +5,7 @@ from flask_restplus import Resource, Namespace, abort
 from app.exceptions import FieldValidationException
 from ..model.LearningSourceModel import *
 from ..service.SourceService import SourceService
+from ..service.TagService import TagService
 
 ls_ns = Namespace('ls')
 
@@ -71,3 +72,18 @@ class LearningSourceList(Resource):
             raise FieldValidationException(exception_map=exceptions)
         else:
             return new_source, HTTPStatus.CREATED
+
+
+@ls_ns.route('/tags')
+class LearningSourceTagList(Resource):
+    tag_service = TagService()
+
+    @ls_ns.marshal_with(Tag.tag_response_resource_model,
+                        code=HTTPStatus.OK,
+                        as_list=True,
+                        description='Get all tags',
+                        envelope='tags')
+    def get(self):
+        tags = self.tag_service.get_all_tags()
+        return tags, HTTPStatus.OK
+
