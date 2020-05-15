@@ -47,6 +47,7 @@ class Source(db.Model):
     get_source_by_id_response_model = v1_api.model('Source', {
         'id': fields.Integer,
         'name': fields.String,
+        'description': fields.String,
         'link': fields.String,
         'tags': fields.List(fields.Nested(tag_response_resource_model)),
         'created_at': fields.DateTime,
