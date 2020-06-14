@@ -3,6 +3,7 @@ from http import HTTPStatus
 from flask_restplus import Resource, Namespace, abort
 
 from app.exceptions import FieldValidationException
+from app.utils.decorators import token_required, admin_token_required
 from ..model.LearningSourceModel import *
 from ..service.SourceService import SourceService
 from ..service.TagService import TagService
@@ -17,6 +18,7 @@ class LearningSource(Resource):
     @ls_ns.marshal_with(Source.get_source_by_id_response_model,
                         code=HTTPStatus.OK,
                         description='Get source by id')
+    @token_required
     def get(self, source_id):
         source = self.source_service.get_source_by_id(source_id)
         if source:
@@ -28,6 +30,7 @@ class LearningSource(Resource):
                         code=HTTPStatus.OK,
                         description='Delete source',
                         skip_none=True)
+    @token_required
     def delete(self, source_id):
         source = self.source_service.delete_source(source_id)
         if source:
@@ -40,6 +43,7 @@ class LearningSource(Resource):
     @ls_ns.marshal_with(Source.update_source_response_model,
                         code=HTTPStatus.OK,
                         description='Update source')
+    @token_required
     def put(self, source_id):
         updated_source, exceptions = self.source_service.update_source(source_id, v1_api.payload)
         if exceptions:
@@ -57,6 +61,7 @@ class LearningSourceList(Resource):
                         as_list=True,
                         description='Get all sources',
                         envelope='sources')
+    @admin_token_required
     def get(self):
         sources = self.source_service.get_all_sources()
         return sources, HTTPStatus.OK
@@ -65,6 +70,7 @@ class LearningSourceList(Resource):
     @ls_ns.marshal_with(Source.create_source_response_resource_model,
                         code=HTTPStatus.CREATED,
                         description='Create new source')
+    @token_required
     def post(self):
         data = v1_api.payload
         new_source, exceptions = self.source_service.save_new_source(data)

@@ -24,22 +24,27 @@ class SourceService:
             exceptions['already_exist'] = f'source with link `{data.get("link")}` already exist'
         return source, exceptions
 
-    def get_source(self, data):
+    @staticmethod
+    def get_source(data):
         return Source.query.filter_by(link=data['link']).first()
 
-    def get_source_by_id(self, source_id):
+    @staticmethod
+    def get_source_by_id(source_id):
         return Source.query.filter_by(id=source_id).first()
 
-    def get_all_sources(self):
+    @staticmethod
+    def get_all_sources():
         return Source.query.all()
 
-    def tags_to_add(self, source, data):
+    @staticmethod
+    def tags_to_add(source, data):
         request_tag_names = [tag.lower() for tag in [tag['name'] for tag in data['tags']]]
         existing_tags = source.tags
         request_tags = [tag_service.get_tag_by_name(tag) for tag in request_tag_names]
         return list(set(request_tags) - set(existing_tags))
 
-    def tags_to_delete(self, source, data):
+    @staticmethod
+    def tags_to_delete(source, data):
         request_tag_names = [tag.lower() for tag in [tag['name'] for tag in data['tags']]]
         existing_tags = source.tags
         request_tags = [tag_service.get_tag_by_name(tag) for tag in request_tag_names]
@@ -96,6 +101,7 @@ class SourceService:
             db.session.commit()
             return source
 
-    def save_changes(self, data):
+    @staticmethod
+    def save_changes(data):
         db.session.add(data)
         db.session.commit()

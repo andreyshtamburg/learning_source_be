@@ -32,6 +32,7 @@ class Source(db.Model):
     link = db.Column(db.String(512), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow())
     last_updated = db.Column(db.DateTime, default=datetime.utcnow())
+    user_id = db.Column(db.Integer)
     tags = db.relationship('Tag', secondary=source_tag, backref=db.backref('source_tags', lazy='dynamic'))
 
     get_sources_response_resource_model = v1_api.model('Sources', {

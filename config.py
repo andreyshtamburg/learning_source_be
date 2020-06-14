@@ -1,3 +1,6 @@
+import os
+
+
 class Config:
     """
         Flask app config
@@ -6,6 +9,7 @@ class Config:
     TESTING = False
     SQLALCHEMY_DATABASE_URI = ''
     SWAGGER_DOC_PATH = '/doc/'
+    SECRET_KEY = os.getenv("SECRET_KEY", "my_precious_secret_key")
 
 
 class DevelopmentConfig(Config):
@@ -29,3 +33,5 @@ config = {
     'testing': TestingConfig,
     'production': ProductionConfig
 }
+
+key = Config.SECRET_KEY
