@@ -1,6 +1,6 @@
 import requests
 
-USER_SOURCE_URL = 'http://localhost:5533'
+USER_SOURCE_URL = 'http://host.docker.internal:5533'
 
 
 def call_get(endpoint):

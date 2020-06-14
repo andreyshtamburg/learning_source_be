@@ -1,18 +1,25 @@
-FROM python:3.7.6
+FROM python:3.8
 
-# Flask config
+LABEL Author="Andrei Shtamburg"
+LABEL E-mail="andrewshtamburg@gmail.com"
+LABEL version="0.0.1b"
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV FLASK_APP "main.py"
 ENV FLASK_ENV "development"
 ENV FLASK_DEBUG True
 
-# Python config to run flask app in container
-ENV PYTHONUNBUFFERED 1
+RUN mkdir /ls
+WORKDIR /ls
 
-WORKDIR /learning_source
+COPY Pip* /ls/
 
-COPY app app/
-COPY Pip* ./
-COPY *.py ./
+RUN pip install --upgrade pip && \
+    pip install pipenv && \
+    pipenv install --dev --system --deploy --ignore-pipfile
 
-RUN pip install --upgrade pip && pip install pipenv && pipenv install --dev --system --deploy --ignore-pipfile
+ADD . /ls
 
-CMD python main.py run
+EXPOSE 4433
+
+CMD flask run --host=0.0.0.0 --port=4433

@@ -13,9 +13,14 @@ class Config:
 
 
 class DevelopmentConfig(Config):
+    user = os.environ['POSTGRES_USER']
+    pwd = os.environ['POSTGRES_PASSWORD']
+    db = os.environ['POSTGRES_DB']
+    host = 'db'
+    port = '5432'
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://source:secret@localhost/source'
-    SWAGGER_UI_DOC_EXPANSION = 'list'
+    SQLALCHEMY_DATABASE_URI = "postgres://%s:%s@%s:%s/%s" % (user, pwd, host, port, db)
+    SWAGGER_UI_DOC_EXPANSION = "list"
 
 
 class TestingConfig(Config):
